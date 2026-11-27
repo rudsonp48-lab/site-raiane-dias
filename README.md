@@ -14,7 +14,7 @@ Site (link da bio) feito para celular, com um **painel em `/admin`** para mudar 
 4. Em **Settings → Environment Variables**, crie `ADMIN_PASSWORD` com a senha que você quiser para o painel.
 5. Faça um **Redeploy** (para o Vercel enxergar as novas variáveis).
 6. Abra `https://SEU-SITE.vercel.app/admin`, entre com a senha e pronto.
-7. Troque `SEU-DOMINIO.vercel.app` pelo endereço real em `index.html` (2 lugares: `og:image` e o bloco `application/ld+json`) para a prévia de compartilhamento funcionar.
+7. O endereço público é `https://site-raiane-dias.vercel.app` (já aplicado em `index.html`).
 
 ## Observações
 - Guarde a senha do painel. Se esquecer, é só trocar `ADMIN_PASSWORD` no Vercel e fazer redeploy.
