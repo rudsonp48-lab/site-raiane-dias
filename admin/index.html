@@ -156,7 +156,7 @@ function render(){
   if(tab==='prices') h='<p class="hint">Edite nomes e valores, depois clique em <b>Salvar e publicar</b>. As linhas sem valor não são publicadas.</p>'+priceCol('esq','Coluna da esquerda')+'<div class="sep"></div>'+priceCol('dir','Coluna da direita');
   else if(tab==='photos'){
     h='<p class="hint">Escolha uma foto do celular ou do computador. Ela é ajustada automaticamente. Depois clique em <b>Salvar e publicar</b>.</p><div class="slots">';
-    SLOTS.forEach(function(s){ var cur=D.photos[s[0]]||window.SITE.photos[s[0]]; h+='<div class="slot"><div class="th"><img src="'+esc(cur)+'" alt=""></div><b>'+s[1]+'</b><button class="btn" data-pick="'+s[0]+'">Trocar foto</button><input type="file" accept="image/*" hidden data-file="'+s[0]+'">'+(D.photos[s[0]]?'<button class="btn sm" data-reset="'+s[0]+'">Voltar à original</button>':'')+'</div>' });
+    SLOTS.forEach(function(s){ var cur=D.photos[s[0]]||window.SITE.photos[s[0]]; h+='<div class="slot"><div class="th"><img src="'+esc(cur)+'" alt=""></div><b>'+s[1]+'</b><button class="btn" data-pick="'+s[0]+'">Trocar foto</button><input type="file" accept="image/*,.heic,.heif,.HEIC,.HEIF" hidden data-file="'+s[0]+'">'+(D.photos[s[0]]?'<button class="btn sm" data-reset="'+s[0]+'">Voltar à original</button>':'')+'</div>' });
     h+='</div>';
   } else {
     h='<p class="hint">Esses dados aparecem nos botões do site. Se deixar o WhatsApp vazio, o botão "Agendar" não aparece.</p><div class="fld"><label>WhatsApp (com DDD, só números)</label><input id="fWa" inputmode="numeric" placeholder="61999999999" value="'+esc(D.links.whatsapp)+'"></div><div class="fld"><label>Instagram (sem @)</label><input id="fIg" placeholder="raidias.naildesigner" value="'+esc(D.links.instagram)+'"></div>';
@@ -181,12 +181,35 @@ sc.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)r
 });
 sc.addEventListener('change',function(e){var t=e.target;if(t.dataset.file&&t.files&&t.files[0])pick(t.files[0],t.dataset.file)});
 
-function pick(file,slot){
-  status('Preparando a foto…');
-  var url=URL.createObjectURL(file),img=new Image();
-  img.onload=function(){var m=1400,r=Math.min(1,m/Math.max(img.naturalWidth,img.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*r);c.height=Math.round(img.naturalHeight*r);c.getContext('2d').drawImage(img,0,0,c.width,c.height);var d=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(url);D.photos[slot]=d;pending[slot]=d;render();changed()};
-  img.onerror=function(){URL.revokeObjectURL(url);status('Não consegui abrir essa foto. Use JPG ou PNG (fotos HEIC do iPhone às vezes não abrem).','err')};
+function loadScript(src){return new Promise(function(res,rej){var el=document.createElement('script');el.src=src;el.onload=res;el.onerror=function(){rej(new Error('cdn'))};document.head.appendChild(el)})}
+function decodeImg(blob){return new Promise(function(res,rej){
+  var url=URL.createObjectURL(blob),img=new Image();
+  img.onload=function(){URL.revokeObjectURL(url);res(img)};
+  img.onerror=function(){URL.revokeObjectURL(url);rej(new Error('decode'))};
   img.src=url;
+})}
+function shrinkImg(img){
+  var m=1400,w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,r=Math.min(1,m/Math.max(w,h));
+  var c=document.createElement('canvas');c.width=Math.round(w*r);c.height=Math.round(h*r);
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',.85);
+}
+async function pick(file,slot){
+  status('Preparando a foto…');
+  var img=null;
+  try{ img=await decodeImg(file) }catch(e){}
+  if(!img && /heic|heif/i.test((file.type||'')+' '+(file.name||''))){
+    status('Foto do iPhone (HEIC): convertendo… pode levar alguns segundos.');
+    try{
+      if(!window.heic2any) await loadScript('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js');
+      var jpg=await window.heic2any({blob:file,toType:'image/jpeg',quality:.92});
+      if(Array.isArray(jpg)) jpg=jpg[0];
+      img=await decodeImg(jpg);
+    }catch(e){ img=null }
+  }
+  if(!img){ status('Não consegui abrir essa foto. Tente outra, ou abra ela no celular e use "Compartilhar → Salvar como JPG".','err'); return }
+  var d=shrinkImg(img);
+  D.photos[slot]=d;pending[slot]=d;render();changed();
 }
 
 /* salvar */
