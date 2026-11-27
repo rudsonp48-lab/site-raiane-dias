@@ -56,6 +56,7 @@ h3.g{font-family:Cardo,serif;font-weight:400;font-size:19px;margin:6px 0 10px}
 .slot .th img{width:100%;height:100%;object-fit:cover;display:block}
 .slot b{display:block;font-weight:500;font-size:12.5px;margin-bottom:8px;line-height:1.35}
 .slot .btn{width:100%;font-size:12px;padding:7px;margin-bottom:6px}
+.slot .fld{margin:10px 0 0}.slot .fld label{font-size:11.5px}.fld textarea{width:100%;background:#1a1a1a;border:1px solid #333;color:#eee;border-radius:8px;padding:9px 10px;font-family:inherit;font-size:13px;line-height:1.45;resize:vertical}
 .fld{margin-bottom:16px}.fld label{display:block;font-size:12px;color:#aaa;margin-bottom:6px}.fld input{width:100%}
 .main{display:flex;align-items:center;justify-content:center;padding:20px;background:#070707;min-width:0}
 .phone{width:min(100%,420px);height:min(100%,860px);aspect-ratio:390/800;border-radius:36px;border:10px solid #1d1d1d;background:#000;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7)}
@@ -134,7 +135,9 @@ if(PW) tryLogin(PW,true);
 function load(){
   var base=clone(window.SITE);
   fetch('/api/content',{cache:'no-store'}).then(function(r){return r.ok?r.json():{}}).catch(function(){return {}}).then(function(c){
-    D={links:Object.assign({whatsapp:'',instagram:''},base.links,c.links||{}),precos:clone(c.precos&&c.precos.esq?c.precos:base.precos),photos:Object.assign({},c.photos||{})};
+    var bs=base.servicos||[],cs=Array.isArray(c.servicos)?c.servicos:[];
+    D={links:Object.assign({whatsapp:'',instagram:''},base.links,c.links||{}),precos:clone(c.precos&&c.precos.esq?c.precos:base.precos),photos:Object.assign({},c.photos||{}),
+       servicos:bs.map(function(x,i){var o=cs[i]||{};return {t:(o.t||x.t||''),d:(o.d||x.d||'')}})};
     SLOTS.forEach(function(s){ if(!(s[0] in D.photos)) D.photos[s[0]]=null });
     render(); sendPreview();
     status(demo?'Modo demonstração: abra pelo endereço do site publicado para salvar de verdade.':'Pronto. O que você mudar aparece na prévia ao lado.', demo?'warn':'');
@@ -155,8 +158,12 @@ function render(){
   var sc=$('#scroll'),h='';
   if(tab==='prices') h='<p class="hint">Edite nomes e valores, depois clique em <b>Salvar e publicar</b>. As linhas sem valor não são publicadas.</p>'+priceCol('esq','Coluna da esquerda')+'<div class="sep"></div>'+priceCol('dir','Coluna da direita');
   else if(tab==='photos'){
-    h='<p class="hint">Escolha uma foto do celular ou do computador. Ela é ajustada automaticamente. Depois clique em <b>Salvar e publicar</b>.</p><div class="slots">';
-    SLOTS.forEach(function(s){ var cur=D.photos[s[0]]||window.SITE.photos[s[0]]; h+='<div class="slot"><div class="th"><img src="'+esc(cur)+'" alt=""></div><b>'+s[1]+'</b><button class="btn" data-pick="'+s[0]+'">Trocar foto</button><input type="file" accept="image/*,.heic,.heif,.HEIC,.HEIF" hidden data-file="'+s[0]+'">'+(D.photos[s[0]]?'<button class="btn sm" data-reset="'+s[0]+'">Voltar à original</button>':'')+'</div>' });
+    h='<p class="hint">Troque a foto e, nos quatro serviços, também o nome e a descrição que aparecem no site. Depois clique em <b>Salvar e publicar</b>.</p><div class="slots">';
+    SLOTS.forEach(function(s){ var cur=D.photos[s[0]]||window.SITE.photos[s[0]];
+      var si=/^svc[1-4]$/.test(s[0])?(+s[0].slice(3)-1):-1, sv=si>=0?(D.servicos[si]||{t:'',d:''}):null;
+      h+='<div class="slot"><div class="th"><img src="'+esc(cur)+'" alt=""></div><b>'+(sv&&sv.t?esc(sv.t):s[1])+'</b><button class="btn" data-pick="'+s[0]+'">Trocar foto</button><input type="file" accept="image/*,.heic,.heif,.HEIC,.HEIF" hidden data-file="'+s[0]+'">'+(D.photos[s[0]]?'<button class="btn sm" data-reset="'+s[0]+'">Voltar à original</button>':'');
+      if(sv) h+='<div class="fld"><label>Nome do serviço</label><input data-sv="'+si+'" data-sf="t" value="'+esc(sv.t)+'"></div><div class="fld"><label>Descrição</label><textarea data-sv="'+si+'" data-sf="d" rows="5">'+esc(sv.d)+'</textarea></div>';
+      h+='</div>' });
     h+='</div>';
   } else {
     h='<p class="hint">Esses dados aparecem nos botões do site. Se deixar o WhatsApp vazio, o botão "Agendar" não aparece.</p><div class="fld"><label>WhatsApp (com DDD, só números)</label><input id="fWa" inputmode="numeric" placeholder="61999999999" value="'+esc(D.links.whatsapp)+'"></div><div class="fld"><label>Instagram (sem @)</label><input id="fIg" placeholder="raidias.naildesigner" value="'+esc(D.links.instagram)+'"></div>';
@@ -167,6 +174,7 @@ function render(){
 
 var sc=$('#scroll');
 sc.addEventListener('input',function(e){var t=e.target;
+ if(t.dataset.sv!==undefined&&t.dataset.sf){D.servicos[+t.dataset.sv][t.dataset.sf]=t.value;changed();return}
  if(t.dataset.f){var r=D.precos[t.dataset.k].r[+t.dataset.i]; if(t.dataset.f==='n')r[0]=t.value; else r[1]=parseVal(t.value); changed()}
  else if(t.dataset.ct){D.precos[t.dataset.ct].t=t.value;changed()}
  else if(t.id==='fWa'){D.links.whatsapp=t.value.replace(/\D/g,'');changed()}

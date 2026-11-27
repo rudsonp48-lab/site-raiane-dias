@@ -15,6 +15,12 @@ window.SITE = {
     aboutNails: "/assets/img/aboutNails.webp", pricesHeader: "/assets/img/pricesHeader.webp"
   },
   endereco: "Studio Raiane Dias, QN 204 Sl 104 - Samambaia, Brasília - DF, 72316-072",
+  servicos: [   // nome e descrição de cada serviço (o painel /admin também muda isso)
+    { t: "Banho de Gel", d: "Perfeito para quem deseja unhas mais resistentes, com brilho natural e que dispensem retoques frequentes. Uma excelente alternativa para quem quer praticidade no dia a dia, sem se preocupar com esmaltes descascados." },
+    { t: "Alongamento Simples", d: "Uma técnica que alonga e fortalece as unhas de forma prática e natural. Feito com gel ou acrílico, proporciona unhas mais longas, resistentes e com acabamento discreto, ideal para um visual elegante e clean." },
+    { t: "Alongamento Decorado", d: "Une unhas longas e resistentes a designs personalizados, como nail art, pedrarias e glitter. Ideal para quem deseja destacar as unhas com criatividade e sofisticação." },
+    { t: "Alongamento Extremo", d: "Para unhas superlongas e marcantes, ideal para quem busca um visual ousado e artístico, com formatos diferenciados e decorações elaboradas." },
+  ],
   precos: {
     esq: { t: "Serviços", r: [
       ["Blindagem + esmaltação em gel", 75],
