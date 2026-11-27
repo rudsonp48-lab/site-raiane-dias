@@ -165,18 +165,24 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 .foot small{display:block;margin-top:12px;font-size:9.5px;letter-spacing:.5em;color:rgba(216,185,166,.6)}
 @media(min-width:900px){.cta-bg img{object-position:50% 25%}}
 @media(prefers-reduced-motion:reduce){
- html{scroll-behavior:auto}.rv{transition:none;transform:none;opacity:1}.name .ch{animation:none;transform:none}.tag,.hero .chips{animation:none;opacity:1}.pin::before,.pin::after,.cue::after{animation:none}
+ html{scroll-behavior:auto}.pf::before{animation:none;opacity:.9}.rv{transition:none;transform:none;opacity:1}.name .ch{animation:none;transform:none}.tag,.hero .chips{animation:none;opacity:1}.pin::before,.pin::after,.cue::after{animation:none}
 }
 
 /* ===== PORTFÓLIO ===== */
-.pf{padding:92px 0 100px;background:var(--bg);--pw:min(320px,74vw)}
+.pf{padding:92px 0 100px;background:#050505;--pw:min(320px,74vw);position:relative;overflow:hidden;isolation:isolate}
+.pf::before{content:'';position:absolute;left:50%;top:56%;width:min(1000px,165vw);aspect-ratio:1/1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;
+  background:radial-gradient(circle,rgba(226,38,46,.58) 0%,rgba(168,18,30,.34) 30%,rgba(104,10,20,.16) 52%,rgba(40,4,8,.05) 70%,transparent 80%);
+  filter:blur(34px);animation:pfGlow 7.5s ease-in-out infinite alternate}
+.pf::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(to bottom,var(--bg) 0%,rgba(8,8,8,0) 22%,rgba(8,8,8,0) 78%,var(--bg) 100%)}
+@keyframes pfGlow{from{opacity:.7;transform:translate(-50%,-50%) scale(.94)}to{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
 .pf-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:26px}
 .pf-count{font-size:10.5px;letter-spacing:.3em;color:var(--mut);white-space:nowrap;padding-bottom:8px}
 .pf-count b{color:var(--gold);font-weight:500}
 .pf-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding:8px calc(50% - var(--pw)/2);-webkit-overflow-scrolling:touch}
 .pf-track::-webkit-scrollbar{display:none}
 .pf-slide{flex:0 0 var(--pw);scroll-snap-align:center;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:#121212;opacity:.4;transform:scale(.9);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.pf-slide.on{opacity:1;transform:scale(1)}
+.pf-slide.on{opacity:1;transform:scale(1);box-shadow:0 26px 70px rgba(214,30,40,.42),0 0 0 1px rgba(255,255,255,.06)}
 .pf-slide img{width:100%;height:100%;object-fit:cover;display:block}
 .pf-dots{display:flex;gap:6px;justify-content:center;align-items:center;margin-top:24px;flex-wrap:wrap;padding:0 22px}
 .pf-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);border:0;padding:0;cursor:pointer;transition:background .4s var(--ease),width .4s var(--ease)}
