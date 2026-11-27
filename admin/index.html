@@ -194,6 +194,26 @@ function shrinkImg(img){
   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
   return c.toDataURL('image/jpeg',.85);
 }
+async function heifDecode(file){
+  if(!window.__libheif){
+    await loadScript('https://cdn.jsdelivr.net/npm/libheif-js@1.18.2/libheif-wasm/libheif-bundle.js');
+    var l=window.libheif; if(typeof l==='function') l=await l();
+    if(!l||!l.HeifDecoder) throw new Error('conversor indisponível');
+    window.__libheif=l;
+  }
+  var lib=window.__libheif;
+  var imgs=new lib.HeifDecoder().decode(new Uint8Array(await file.arrayBuffer()));
+  if(!imgs||!imgs.length) throw new Error('sem imagem dentro do arquivo');
+  var best=imgs[0];
+  imgs.forEach(function(im){ if(im.get_width()*im.get_height()>best.get_width()*best.get_height()) best=im });
+  var w=best.get_width(),h=best.get_height();
+  var c=document.createElement('canvas');c.width=w;c.height=h;
+  var ctx=c.getContext('2d'),id=ctx.createImageData(w,h);
+  await new Promise(function(res,rej){ best.display(id,function(d){ d?res():rej(new Error('falha ao desenhar')) }) });
+  ctx.putImageData(id,0,0);
+  try{ imgs.forEach(function(im){ im.free&&im.free() }) }catch(e){}
+  return c;
+}
 async function sniff(file){
   var b=new Uint8Array(await file.slice(0,32).arrayBuffer());
   var hex=[].map.call(b.slice(0,12),function(x){return ('0'+x.toString(16)).slice(-2)}).join(' ');
@@ -220,13 +240,18 @@ async function pick(file,slot){
   try{ info=await sniff(file) }catch(e){}
   if(info.kind!=='raw'&&info.kind!=='video'){ try{ img=await decodeImg(file) }catch(e){} }
   if(!img && (info.kind==='heif' || /heic|heif/i.test((file.type||'')+' '+(file.name||'')) || info.kind==='desconhecido')){
-    status('Convertendo a foto (formato do iPhone)… pode levar alguns segundos.');
-    try{
-      if(!window.heic2any) await loadScript('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js');
-      var jpg=await window.heic2any({blob:file,toType:'image/jpeg',quality:.92});
-      if(Array.isArray(jpg)) jpg=jpg[0];
-      img=await decodeImg(jpg);
-    }catch(e){ img=null; info.conv=(e&&e.message)||String(e) }
+    status('Convertendo a foto do iPhone… pode levar alguns segundos.');
+    var e1='',e2='';
+    try{ img=await heifDecode(file) }catch(e){ e1=(e&&e.message)||String(e) }
+    if(!img){
+      try{
+        if(!window.heic2any) await loadScript('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js');
+        var jpg=await window.heic2any({blob:file,toType:'image/jpeg',quality:.92});
+        if(Array.isArray(jpg)) jpg=jpg[0];
+        img=await decodeImg(jpg);
+      }catch(e){ img=null; e2=(e&&e.message)||String(e) }
+    }
+    if(!img) info.conv=e1+(e2?' / '+e2:'');
   }
   if(!img){
     var m;
