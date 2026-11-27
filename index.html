@@ -197,7 +197,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <p class="eyebrow">nail designer</p>
     <h1 class="name" aria-label="Raiane Dias"><span class="ln" data-split>Raiane</span><span class="ln" data-split>Dias</span></h1>
     <p class="tag">2009, o ano onde marquei meu destino, rumo ao extraordinário.</p>
-    <div class="chips" id="heroChips"></div>
   </div>
   <div class="cue">role</div>
 </section>
@@ -333,11 +332,6 @@ function buildLinks(){
   var L=SITE.links||{};
   wa=L.whatsapp?'https://wa.me/'+String(L.whatsapp).replace(/\D/g,'')+'?text='+encodeURIComponent('Olá, Raiane! Gostaria de agendar um horário.'):'';
   ig=L.instagram?'https://instagram.com/'+String(L.instagram).replace(/^@/,''):'';
-  var h='';
-  if(wa) h+=chip(wa,'Agendar horário',true);
-  if(ig) h+=chip(ig,'Instagram');
-  h+=chip(rotaUrl,'Como chegar',!wa);
-  $('#heroChips').innerHTML=h;
   $('#ctaChips').innerHTML=(wa?chip(wa,'Agendar pelo WhatsApp',true):'')+(ig?chip(ig,'Instagram'):'')+chip(rotaUrl,'Traçar rota',!wa);
   $('#dock').innerHTML=(wa?chip(wa,'Agendar',true):'')+chip(rotaUrl,'Como chegar',!wa)+(ig&&!wa?chip(ig,'Instagram'):'');
   $('#locChips').innerHTML=chip(rotaUrl,'Traçar rota',true)+chip(mapsUrl,'Abrir no Maps');
@@ -376,7 +370,7 @@ function pass(el){var r=el.getBoundingClientRect();return clamp((vh-r.top)/(vh+r
 function frame(){
   var y=window.scrollY||0, doc=document.documentElement.scrollHeight-vh;
   pbar.style.transform='scaleX('+(doc>0?y/doc:0)+')';
-  var cr=cta.getBoundingClientRect();var sr=svcs.getBoundingClientRect(),inSv=sr.top<vh*.5&&sr.bottom>vh*.5;dock.classList.toggle('on',y>vh*.7&&cr.top>vh*.45&&!inSv);
+  var cr=cta.getBoundingClientRect();var sr=svcs.getBoundingClientRect(),inSv=sr.top<vh*.5&&sr.bottom>vh*.5;dock.classList.toggle('on',y>vh*.35&&cr.top>vh*.45&&!inSv);
   if(reduce) return;
   /* hero */
   var hp=clamp(y/vh);
