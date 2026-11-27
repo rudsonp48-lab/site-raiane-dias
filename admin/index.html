@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel · Raiane Dias</title>
+<style>
+@font-face{font-display:swap;font-family:Cardo;src:url(/assets/fonts/cardo.ttf)}
+@font-face{font-display:swap;font-family:Pop;font-weight:300;src:url(/assets/fonts/pop-Light.ttf)}
+@font-face{font-display:swap;font-family:Pop;font-weight:400;src:url(/assets/fonts/pop-Regular.ttf)}
+@font-face{font-display:swap;font-family:Pop;font-weight:500;src:url(/assets/fonts/pop-Medium.ttf)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#0b0b0b;color:#eee;font-family:Pop,system-ui,sans-serif;font-size:14px;font-weight:400}
+button,input{font-family:inherit;font-size:inherit}
+[hidden]{display:none!important}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.lbox{width:min(380px,100%);background:#141414;border:1px solid #2a2a2a;border-radius:16px;padding:28px}
+.lbox h1{font-family:Cardo,serif;font-weight:400;font-size:28px;margin:0 0 6px}
+.lbox p{color:#9b9b9b;margin:0 0 18px;line-height:1.6;font-size:13px}
+.lbox input{width:100%;background:#1a1a1a;border:1px solid #333;color:#eee;border-radius:10px;padding:12px;margin-bottom:12px}
+.lbox input:focus,.prow input:focus{outline:none;border-color:#d8b9a6}
+.btn{border:1px solid #3a3a3a;background:#1c1c1c;color:#eee;border-radius:10px;padding:10px 15px;cursor:pointer}
+.btn:hover{border-color:#6a6a6a}
+.btn.pri{background:#d8b9a6;border-color:#d8b9a6;color:#1a1210;font-weight:500}
+.btn.pri:disabled{background:#2a2523;border-color:#2a2523;color:#7b6d66;cursor:default}
+.btn.sm{padding:6px 10px;font-size:12px}
+.err{color:#ef8f8f;font-size:13px;min-height:18px;margin-top:10px}
+.app{display:grid;grid-template-columns:440px 1fr;height:100vh}
+.side{background:#121212;border-right:1px solid #262626;display:flex;flex-direction:column;min-height:0}
+.top{padding:18px 20px 14px;border-bottom:1px solid #262626}
+.top h1{font-family:Cardo,serif;font-weight:400;font-size:24px;margin:0}
+.top small{color:#8d8d8d;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.status{margin-top:10px;font-size:12.5px;color:#9b9b9b;min-height:18px;line-height:1.5}
+.status.warn{color:#e6b866}.status.ok{color:#8fcf9f}.status.err{color:#ef8f8f}
+.tabs{display:flex;border-bottom:1px solid #262626}
+.tab{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:#9b9b9b;padding:13px 0;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+.tab.on{color:#fff;border-bottom-color:#d8b9a6}
+.scroll{overflow:auto;padding:18px 20px 40px;min-height:0;flex:1}
+h3.g{font-family:Cardo,serif;font-weight:400;font-size:19px;margin:6px 0 10px}
+.hint{color:#8d8d8d;font-size:12px;line-height:1.6;margin:0 0 14px}
+.prow{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.prow input,.fld input{background:#1a1a1a;border:1px solid #333;color:#eee;border-radius:8px;padding:9px 10px;min-width:0}
+.prow .nm{flex:1}
+.val{display:flex;align-items:center;background:#1a1a1a;border:1px solid #333;border-radius:8px;padding-left:9px;width:112px;color:#a9a5a1}
+.val:focus-within{border-color:#d8b9a6}
+.val input{border:0;background:none;width:100%;padding:9px 8px 9px 6px;text-align:right;color:#eee}
+.x{background:none;border:0;color:#7a7a7a;cursor:pointer;font-size:18px;padding:4px 6px}.x:hover{color:#ef8f8f}
+.colt{width:100%;background:#1a1a1a;border:1px solid #333;color:#d8b9a6;border-radius:8px;padding:9px 10px;margin-bottom:10px;font-family:Cardo,serif;font-size:17px;font-style:italic}
+.sep{height:1px;background:#262626;margin:20px 0}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.slot{background:#181818;border:1px solid #2c2c2c;border-radius:12px;padding:10px}
+.slot .th{aspect-ratio:4/5;border-radius:8px;overflow:hidden;background:#000;margin-bottom:8px}
+.slot .th img{width:100%;height:100%;object-fit:cover;display:block}
+.slot b{display:block;font-weight:500;font-size:12.5px;margin-bottom:8px;line-height:1.35}
+.slot .btn{width:100%;font-size:12px;padding:7px;margin-bottom:6px}
+.fld{margin-bottom:16px}.fld label{display:block;font-size:12px;color:#aaa;margin-bottom:6px}.fld input{width:100%}
+.main{display:flex;align-items:center;justify-content:center;padding:20px;background:#070707;min-width:0}
+.phone{width:min(100%,420px);height:min(100%,860px);aspect-ratio:390/800;border-radius:36px;border:10px solid #1d1d1d;background:#000;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+.phone iframe{width:100%;height:100%;border:0;display:block;background:#080808}
+@media(max-width:900px){.app{grid-template-columns:1fr;height:auto}.main{display:none}.scroll{overflow:visible}}
+</style>
+</head>
+<body>
+
+<div class="login" id="login">
+  <form class="lbox" id="lform">
+    <h1>Painel do site</h1>
+    <p>Entre com a senha para mudar valores, fotos e contatos do site da Raiane.</p>
+    <input type="password" id="pw" placeholder="Senha" autocomplete="current-password" required>
+    <button class="btn pri" style="width:100%" id="lbtn">Entrar</button>
+    <div class="err" id="lerr"></div>
+  </form>
+</div>
+
+<div class="app" id="app" hidden>
+  <aside class="side">
+    <div class="top">
+      <h1>Painel do site</h1><small>Raiane Dias · Nail Designer</small>
+      <div class="actions">
+        <button class="btn pri" id="bSave" disabled>Salvar e publicar</button>
+        <a class="btn" href="/" target="_blank" rel="noopener" style="text-decoration:none">Ver site</a>
+        <button class="btn" id="bOut">Sair</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-t="prices">Valores</button>
+      <button class="tab" data-t="photos">Fotos</button>
+      <button class="tab" data-t="contact">Contatos</button>
+    </div>
+    <div class="scroll" id="scroll"></div>
+  </aside>
+  <main class="main"><div class="phone"><iframe id="pv" src="/?preview=1" title="Prévia do site"></iframe></div></main>
+</div>
+
+<script src="/config.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var PW='', D=null, pending={}, dirty=false, tab='prices', demo=false;
+try{ PW=sessionStorage.getItem('rb-pw')||'' }catch(e){}
+var SLOTS=[
+ ['svc1','Banho de gel'],['svc2','Alongamento simples'],['svc3','Alongamento decorado'],['svc4','Alongamento extremo'],
+ ['aboutNails','Unhas (galeria e "um pouco de mim")'],['pricesHeader','Topo da tabela de valores'],
+ ['hero','Foto da capa'],['about','Foto de "um pouco de mim"'],['cta','Foto do final (Agende seu horário)']];
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fmt(n){return n==null?'':Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function parseVal(s){s=String(s).replace(/[^\d.,]/g,'');if(!s)return null;if(s.indexOf(',')>=0)s=s.replace(/\./g,'').replace(',','.');var n=parseFloat(s);return isNaN(n)?null:n}
+function status(t,c){var s=$('#status');s.textContent=t||'';s.className='status'+(c?' '+c:'')}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+
+function api(name,body){
+  return fetch('/api/'+name,{method:'POST',headers:{'content-type':'application/json','x-admin-password':encodeURIComponent(PW)},body:JSON.stringify(body||{})})
+   .then(function(r){return r.json().catch(function(){return {}}).then(function(j){ if(!r.ok){var e=new Error(j.error||('Erro '+r.status));e.status=r.status;throw e} return j })});
+}
+
+/* login */
+function showApp(){ $('#login').hidden=true; $('#app').hidden=false; load(); }
+function tryLogin(pw,silent){
+  PW=pw;
+  return api('login').then(function(){ try{sessionStorage.setItem('rb-pw',PW)}catch(e){} showApp() }).catch(function(e){
+    if(e.status===404||e.status===405||e instanceof TypeError||location.protocol==='file:'){ demo=true; showApp(); return }
+    if(!silent) $('#lerr').textContent=e.message;
+  });
+}
+$('#lform').addEventListener('submit',function(ev){ev.preventDefault();$('#lerr').textContent='';tryLogin($('#pw').value,false)});
+$('#bOut').addEventListener('click',function(){try{sessionStorage.removeItem('rb-pw')}catch(e){} location.reload()});
+if(PW) tryLogin(PW,true);
+
+/* dados */
+function load(){
+  var base=clone(window.SITE);
+  fetch('/api/content',{cache:'no-store'}).then(function(r){return r.ok?r.json():{}}).catch(function(){return {}}).then(function(c){
+    D={links:Object.assign({whatsapp:'',instagram:''},base.links,c.links||{}),precos:clone(c.precos&&c.precos.esq?c.precos:base.precos),photos:Object.assign({},c.photos||{})};
+    SLOTS.forEach(function(s){ if(!(s[0] in D.photos)) D.photos[s[0]]=null });
+    render(); sendPreview();
+    status(demo?'Modo demonstração: abra pelo endereço do site publicado para salvar de verdade.':'Pronto. O que você mudar aparece na prévia ao lado.', demo?'warn':'');
+  });
+}
+function sendPreview(){ var f=$('#pv'); try{ f.contentWindow.postMessage({type:'rb-preview',content:D},location.origin) }catch(e){} }
+$('#pv').addEventListener('load',function(){ sendPreview(); setTimeout(sendPreview,600) });
+function changed(){ dirty=true; $('#bSave').disabled=demo; status(demo?'Modo demonstração: não dá para salvar aqui.':'Alterações ainda não salvas.','warn'); sendPreview(); }
+
+/* telas */
+function priceCol(k,title){
+  var g=D.precos[k], h='<h3 class="g">'+title+'</h3><input class="colt" data-ct="'+k+'" value="'+esc(g.t)+'" aria-label="Título da coluna">';
+  g.r.forEach(function(r,i){ h+='<div class="prow"><input class="nm" data-k="'+k+'" data-i="'+i+'" data-f="n" value="'+esc(r[0])+'" aria-label="Nome"><div class="val"><span>R$</span><input data-k="'+k+'" data-i="'+i+'" data-f="v" inputmode="decimal" value="'+fmt(r[1])+'" aria-label="Valor"></div><button class="x" data-rm="'+k+':'+i+'" aria-label="Remover linha" title="Remover linha">×</button></div>' });
+  h+=g.r.length<12?'<button class="btn sm" data-add="'+k+'">+ Adicionar linha</button>':'<p class="hint">Máximo de 12 linhas por coluna.</p>';
+  return h;
+}
+function render(){
+  var sc=$('#scroll'),h='';
+  if(tab==='prices') h='<p class="hint">Edite nomes e valores, depois clique em <b>Salvar e publicar</b>. As linhas sem valor não são publicadas.</p>'+priceCol('esq','Coluna da esquerda')+'<div class="sep"></div>'+priceCol('dir','Coluna da direita');
+  else if(tab==='photos'){
+    h='<p class="hint">Escolha uma foto do celular ou do computador. Ela é ajustada automaticamente. Depois clique em <b>Salvar e publicar</b>.</p><div class="slots">';
+    SLOTS.forEach(function(s){ var cur=D.photos[s[0]]||window.SITE.photos[s[0]]; h+='<div class="slot"><div class="th"><img src="'+esc(cur)+'" alt=""></div><b>'+s[1]+'</b><button class="btn" data-pick="'+s[0]+'">Trocar foto</button><input type="file" accept="image/*" hidden data-file="'+s[0]+'">'+(D.photos[s[0]]?'<button class="btn sm" data-reset="'+s[0]+'">Voltar à original</button>':'')+'</div>' });
+    h+='</div>';
+  } else {
+    h='<p class="hint">Esses dados aparecem nos botões do site. Se deixar o WhatsApp vazio, o botão "Agendar" não aparece.</p><div class="fld"><label>WhatsApp (com DDD, só números)</label><input id="fWa" inputmode="numeric" placeholder="61999999999" value="'+esc(D.links.whatsapp)+'"></div><div class="fld"><label>Instagram (sem @)</label><input id="fIg" placeholder="raidias.naildesigner" value="'+esc(D.links.instagram)+'"></div>';
+  }
+  sc.innerHTML=h;
+}
+[].forEach.call(document.querySelectorAll('.tab'),function(b){b.addEventListener('click',function(){tab=b.dataset.t;[].forEach.call(document.querySelectorAll('.tab'),function(x){x.classList.toggle('on',x===b)});render()})});
+
+var sc=$('#scroll');
+sc.addEventListener('input',function(e){var t=e.target;
+ if(t.dataset.f){var r=D.precos[t.dataset.k].r[+t.dataset.i]; if(t.dataset.f==='n')r[0]=t.value; else r[1]=parseVal(t.value); changed()}
+ else if(t.dataset.ct){D.precos[t.dataset.ct].t=t.value;changed()}
+ else if(t.id==='fWa'){D.links.whatsapp=t.value.replace(/\D/g,'');changed()}
+ else if(t.id==='fIg'){D.links.instagram=t.value.replace(/^@/,'');changed()}
+});
+sc.addEventListener('focusout',function(e){var t=e.target;if(t.dataset&&t.dataset.f==='v'){var v=D.precos[t.dataset.k].r[+t.dataset.i][1];t.value=fmt(v)}});
+sc.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+ if(b.dataset.add){D.precos[b.dataset.add].r.push(['Novo serviço',null]);render();changed()}
+ else if(b.dataset.rm){var a=b.dataset.rm.split(':');D.precos[a[0]].r.splice(+a[1],1);render();changed()}
+ else if(b.dataset.pick){sc.querySelector('input[data-file="'+b.dataset.pick+'"]').click()}
+ else if(b.dataset.reset){D.photos[b.dataset.reset]=null;delete pending[b.dataset.reset];render();changed()}
+});
+sc.addEventListener('change',function(e){var t=e.target;if(t.dataset.file&&t.files&&t.files[0])pick(t.files[0],t.dataset.file)});
+
+function pick(file,slot){
+  status('Preparando a foto…');
+  var url=URL.createObjectURL(file),img=new Image();
+  img.onload=function(){var m=1400,r=Math.min(1,m/Math.max(img.naturalWidth,img.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*r);c.height=Math.round(img.naturalHeight*r);c.getContext('2d').drawImage(img,0,0,c.width,c.height);var d=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(url);D.photos[slot]=d;pending[slot]=d;render();changed()};
+  img.onerror=function(){URL.revokeObjectURL(url);status('Não consegui abrir essa foto. Use JPG ou PNG (fotos HEIC do iPhone às vezes não abrem).','err')};
+  img.src=url;
+}
+
+/* salvar */
+$('#bSave').addEventListener('click',async function(){
+  if(demo||!dirty)return; $('#bSave').disabled=true;
+  try{
+    var slots=Object.keys(pending);
+    for(var i=0;i<slots.length;i++){ status('Enviando foto '+(i+1)+' de '+slots.length+'…'); var r=await api('upload',{slot:slots[i],dataUrl:pending[slots[i]]}); D.photos[slots[i]]=r.url; delete pending[slots[i]]; }
+    status('Publicando…');
+    var out=clone(D); out.precos.esq.r=out.precos.esq.r.filter(function(x){return x[1]!=null&&x[0]}); out.precos.dir.r=out.precos.dir.r.filter(function(x){return x[1]!=null&&x[0]});
+    await api('save',out);
+    D.precos=out.precos; dirty=false; render(); status('Salvo! O site já está atualizado (pode levar alguns segundos para aparecer para todo mundo).','ok');
+  }catch(e){
+    $('#bSave').disabled=false;
+    if(e.status===401){status('Sessão expirada. Entre de novo.','err');try{sessionStorage.removeItem('rb-pw')}catch(x){}setTimeout(function(){location.reload()},1500)}
+    else status(e.message||'Não consegui salvar. Tente de novo.','err');
+  }
+});
+})();
+</script>
+</body>
+</html>
