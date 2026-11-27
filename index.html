@@ -167,6 +167,21 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}.rv{transition:none;transform:none;opacity:1}.name .ch{animation:none;transform:none}.tag,.hero .chips{animation:none;opacity:1}.pin::before,.pin::after,.cue::after{animation:none}
 }
+
+/* ===== PORTFÓLIO ===== */
+.pf{padding:92px 0 100px;background:var(--bg);--pw:min(320px,74vw)}
+.pf-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:26px}
+.pf-count{font-size:10.5px;letter-spacing:.3em;color:var(--mut);white-space:nowrap;padding-bottom:8px}
+.pf-count b{color:var(--gold);font-weight:500}
+.pf-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding:8px calc(50% - var(--pw)/2);-webkit-overflow-scrolling:touch}
+.pf-track::-webkit-scrollbar{display:none}
+.pf-slide{flex:0 0 var(--pw);scroll-snap-align:center;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:#121212;opacity:.4;transform:scale(.9);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.pf-slide.on{opacity:1;transform:scale(1)}
+.pf-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-dots{display:flex;gap:6px;justify-content:center;align-items:center;margin-top:24px;flex-wrap:wrap;padding:0 22px}
+.pf-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);border:0;padding:0;cursor:pointer;transition:background .4s var(--ease),width .4s var(--ease)}
+.pf-dot.on{background:var(--gold);width:18px;border-radius:3px}
+@media(min-width:900px){.pf{--pw:min(340px,26vw)}.pf{padding:120px 0 130px}}
 </style>
 </head>
 <body>
@@ -235,6 +250,35 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       <div class="card"><img data-photo="svc2" src="/assets/img/svc2.webp" alt="" loading="eager" decoding="async"></div>
     </div>
   </div>
+</section>
+
+<!-- PORTFÓLIO -->
+<section class="pf" id="portfolio">
+  <div class="wrap pf-head">
+    <div><span class="kicker">Portfólio</span><h2 class="h2" style="margin-top:10px">Feito <i>à mão.</i></h2></div>
+    <span class="pf-count"><b id="pfN">01</b> / 18</span>
+  </div>
+  <div class="pf-track" id="pfTrack">
+      <div class="pf-slide"><img src="/assets/img/pf/p01.webp" alt="Unhas feitas por Raiane Dias — trabalho 1" width="780" height="1040" loading="eager" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p02.webp" alt="Unhas feitas por Raiane Dias — trabalho 2" width="780" height="1040" loading="eager" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p03.webp" alt="Unhas feitas por Raiane Dias — trabalho 3" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p04.webp" alt="Unhas feitas por Raiane Dias — trabalho 4" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p05.webp" alt="Unhas feitas por Raiane Dias — trabalho 5" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p06.webp" alt="Unhas feitas por Raiane Dias — trabalho 6" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p07.webp" alt="Unhas feitas por Raiane Dias — trabalho 7" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p08.webp" alt="Unhas feitas por Raiane Dias — trabalho 8" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p09.webp" alt="Unhas feitas por Raiane Dias — trabalho 9" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p10.webp" alt="Unhas feitas por Raiane Dias — trabalho 10" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p11.webp" alt="Unhas feitas por Raiane Dias — trabalho 11" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p12.webp" alt="Unhas feitas por Raiane Dias — trabalho 12" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p13.webp" alt="Unhas feitas por Raiane Dias — trabalho 13" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p14.webp" alt="Unhas feitas por Raiane Dias — trabalho 14" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p15.webp" alt="Unhas feitas por Raiane Dias — trabalho 15" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p16.webp" alt="Unhas feitas por Raiane Dias — trabalho 16" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p17.webp" alt="Unhas feitas por Raiane Dias — trabalho 17" width="780" height="1040" loading="lazy" decoding="async"></div>
+      <div class="pf-slide"><img src="/assets/img/pf/p18.webp" alt="Unhas feitas por Raiane Dias — trabalho 18" width="780" height="1040" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="pf-dots" id="pfDots"></div>
 </section>
 
 <!-- VALORES -->
@@ -383,6 +427,52 @@ var tick=false;function onS(){if(!tick){tick=true;requestAnimationFrame(function
 addEventListener('scroll',onS,{passive:true});
 addEventListener('resize',function(){vh=innerHeight;vw=innerWidth;frame()});
 addEventListener('load',frame);frame();
+})();
+</script>
+<script>
+/* Carrossel do portfólio: gira sozinho, pausa quando a pessoa mexe ou sai da tela */
+(function(){
+  var track=document.getElementById('pfTrack'); if(!track) return;
+  var slides=[].slice.call(track.children), dots=document.getElementById('pfDots'), num=document.getElementById('pfN');
+  var cur=0, paused=false, userUntil=0;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  slides.forEach(function(s,k){
+    var b=document.createElement('button'); b.type='button'; b.className='pf-dot';
+    b.setAttribute('aria-label','Ver foto '+(k+1)+' de '+slides.length);
+    b.addEventListener('click',function(){ userUntil=Date.now()+10000; go(k) });
+    dots.appendChild(b);
+  });
+  function mark(k){
+    cur=k;
+    slides.forEach(function(s,j){ s.classList.toggle('on', j===k) });
+    [].forEach.call(dots.children,function(d,j){ d.classList.toggle('on', j===k) });
+    if(num) num.textContent=('0'+(k+1)).slice(-2);
+  }
+  function go(k,instant){
+    k=(k+slides.length)%slides.length;
+    var s=slides[k], left=s.offsetLeft-(track.clientWidth-s.clientWidth)/2;
+    try{ track.scrollTo({left:left,behavior:instant?'auto':'smooth'}) }catch(e){ track.scrollLeft=left }
+    mark(k);
+  }
+  var t;
+  track.addEventListener('scroll',function(){ clearTimeout(t); t=setTimeout(sync,90) },{passive:true});
+  function sync(){
+    var c=track.scrollLeft+track.clientWidth/2, best=0, bd=1e9;
+    slides.forEach(function(s,j){ var d=Math.abs(s.offsetLeft+s.clientWidth/2-c); if(d<bd){bd=d;best=j} });
+    mark(best);
+  }
+  ['pointerdown','touchstart','wheel'].forEach(function(ev){
+    track.addEventListener(ev,function(){ userUntil=Date.now()+10000 },{passive:true});
+  });
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ paused=!es[0].isIntersecting },{threshold:.2}).observe(track);
+  }
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) paused=true; else paused=false });
+  mark(0);
+  if(!reduce) setInterval(function(){
+    if(paused||Date.now()<userUntil) return;
+    var next=cur+1; go(next%slides.length, next>=slides.length);
+  },3800);
 })();
 </script>
 </body>
