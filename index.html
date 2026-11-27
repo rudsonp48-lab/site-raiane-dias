@@ -53,8 +53,8 @@ a{color:inherit;text-decoration:none}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 14%}
 .hero-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.45) 0,transparent 24%,transparent 38%,rgba(0,0,0,.78) 74%,#080808 100%)}
 .top{position:absolute;left:0;right:0;top:0;padding:20px 22px;display:flex;justify-content:space-between;align-items:center;z-index:3}
-.mark{width:40px;height:50px;border-radius:30px;overflow:hidden;background:#fff}
-.mark img{width:100%;height:100%;object-fit:cover}
+.mark{width:56px;height:auto;border-radius:0;overflow:visible;background:none}
+.mark img{width:100%;height:auto;object-fit:contain;display:block}
 .top small{font-size:9.5px;letter-spacing:.5em;text-transform:uppercase;color:rgba(255,255,255,.7)}
 .hero-txt{position:absolute;left:0;right:0;bottom:0;padding:0 22px 64px;z-index:2;will-change:transform,opacity}
 .eyebrow{font-family:Cardo,serif;font-style:italic;font-size:clamp(26px,7vw,44px);color:var(--gold);line-height:1;margin-bottom:6px}
@@ -161,7 +161,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 .cta .wrap{position:relative;z-index:2;padding-bottom:70px}
 .cta .h2{font-size:clamp(52px,15vw,130px);margin:12px 0 26px}
 .foot{padding:34px 22px 44px;text-align:center;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#77726e;background:var(--bg)}
-.foot .mark{margin:0 auto 14px}
+.foot .mark{width:104px;margin:0 auto 16px}
+.foot small{display:block;margin-top:12px;font-size:9.5px;letter-spacing:.5em;color:rgba(216,185,166,.6)}
 @media(min-width:900px){.cta-bg img{object-position:50% 25%}}
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}.rv{transition:none;transform:none;opacity:1}.name .ch{animation:none;transform:none}.tag,.hero .chips{animation:none;opacity:1}.pin::before,.pin::after,.cue::after{animation:none}
@@ -176,7 +177,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <section class="hero" id="hero">
   <div class="hero-bg"><img data-photo="hero" fetchpriority="high" decoding="async" width="866" height="1300" src="/assets/img/hero.webp" alt="Raiane Dias, nail designer"></div>
   <div class="hero-shade"></div>
-  <div class="top"><div class="mark"><img src="/assets/img/logo.webp" alt="Espaço RD"></div><small>Samambaia · DF</small></div>
+  <div class="top"><div class="mark"><img src="/assets/img/logo.webp" alt="Espaço RD"></div></div>
   <div class="hero-txt" id="heroTxt">
     <p class="eyebrow">nail designer</p>
     <h1 class="name" aria-label="Raiane Dias"><span class="ln" data-split>Raiane</span><span class="ln" data-split>Dias</span></h1>
@@ -269,7 +270,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <div class="chips rv" style="--d:.2s" id="ctaChips"></div>
   </div>
 </section>
-<footer class="foot"><div class="mark"><img src="/assets/img/logo.webp" alt=""></div>Espaço RD · Raiane Dias · Nails Designer</footer>
+<footer class="foot"><div class="mark"><img src="/assets/img/logo.webp" alt="Espaço RD"></div>Espaço RD · Raiane Dias · Nails Designer<small>Samambaia · DF</small></footer>
 
 <script src="/config.js"></script>
 <script>
