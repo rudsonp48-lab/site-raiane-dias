@@ -6,7 +6,7 @@
 /* Obs.: depois de ligar o painel /admin, o que você salvar lá vale mais do que este arquivo. */
 window.SITE = {
   links: {
-    whatsapp: "",   // números com DDI+DDD, ex.: "5561999999999"
+    whatsapp: "5561986424167",   // números com DDI+DDD, ex.: "5561999999999"
     instagram: "raidias.naildesigner"   // usuário sem @
   },
   photos: {   // fotos padrão (o painel /admin pode trocar por outras)
