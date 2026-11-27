@@ -194,20 +194,47 @@ function shrinkImg(img){
   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
   return c.toDataURL('image/jpeg',.85);
 }
+async function sniff(file){
+  var b=new Uint8Array(await file.slice(0,32).arrayBuffer());
+  var hex=[].map.call(b.slice(0,12),function(x){return ('0'+x.toString(16)).slice(-2)}).join(' ');
+  var txt=function(a,z){return String.fromCharCode.apply(null,b.slice(a,z))};
+  var kind='desconhecido';
+  if(b[0]===0xFF&&b[1]===0xD8) kind='jpg';
+  else if(b[0]===0x89&&txt(1,4)==='PNG') kind='png';
+  else if(txt(0,3)==='GIF') kind='gif';
+  else if(txt(0,4)==='RIFF'&&txt(8,12)==='WEBP') kind='webp';
+  else if(txt(0,4)==='II*\u0000'||txt(0,4)==='MM\u0000*') kind='raw';
+  else if(txt(4,8)==='ftyp'){
+    var brand=txt(8,12).toLowerCase();
+    if(/heic|heix|hevc|heim|heis|hevm|mif1|msf1|avif/.test(brand)) kind='heif';
+    else if(/crx/.test(brand)) kind='raw';
+    else kind='video';
+  }
+  else if(b[0]===0x3C&&txt(0,4).toLowerCase().indexOf('<')===0) kind='svg';
+  return {kind:kind,hex:hex};
+}
 async function pick(file,slot){
   status('Preparando a foto…');
-  var img=null;
-  try{ img=await decodeImg(file) }catch(e){}
-  if(!img && /heic|heif/i.test((file.type||'')+' '+(file.name||''))){
-    status('Foto do iPhone (HEIC): convertendo… pode levar alguns segundos.');
+  if(file.size>60*1024*1024){ status('Esse arquivo tem '+Math.round(file.size/1048576)+' MB, grande demais. Use uma foto comum do celular.','err'); return }
+  var img=null, info={kind:'?',hex:''};
+  try{ info=await sniff(file) }catch(e){}
+  if(info.kind!=='raw'&&info.kind!=='video'){ try{ img=await decodeImg(file) }catch(e){} }
+  if(!img && (info.kind==='heif' || /heic|heif/i.test((file.type||'')+' '+(file.name||'')) || info.kind==='desconhecido')){
+    status('Convertendo a foto (formato do iPhone)… pode levar alguns segundos.');
     try{
       if(!window.heic2any) await loadScript('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js');
       var jpg=await window.heic2any({blob:file,toType:'image/jpeg',quality:.92});
       if(Array.isArray(jpg)) jpg=jpg[0];
       img=await decodeImg(jpg);
-    }catch(e){ img=null }
+    }catch(e){ img=null; info.conv=(e&&e.message)||String(e) }
   }
-  if(!img){ status('Não consegui abrir essa foto. Tente outra, ou abra ela no celular e use "Compartilhar → Salvar como JPG".','err'); return }
+  if(!img){
+    var m;
+    if(info.kind==='raw') m='Essa foto está em formato RAW/DNG (foto profissional da câmera). Exporte ela como JPG e tente de novo.';
+    else if(info.kind==='video') m='Isso é um vídeo (ou uma Live Photo salva como vídeo). Escolha uma foto.';
+    else m='Não consegui abrir este arquivo. Formato: '+info.kind+(info.conv?' · '+info.conv:'')+' · '+(file.type||'sem tipo')+' · '+(file.name||'sem nome')+' · início: '+info.hex;
+    status(m,'err'); return;
+  }
   var d=shrinkImg(img);
   D.photos[slot]=d;pending[slot]=d;render();changed();
 }
